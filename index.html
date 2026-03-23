@@ -13,11 +13,11 @@
       padding: 28px 20px 48px;
     }
     .page-header { text-align: center; margin-bottom: 24px; }
-    .page-header h1 { font-family: 'Playfair Display', serif; font-size: 22px; color: #1a1a2e; margin-bottom: 6px; }
-    .page-header p { font-size: 13px; color: #999; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: 26px; color: #1a1a2e; margin-bottom: 6px; }
+    .page-header p { font-size: 16px; color: #999; }
 
     .section-title {
-      font-size: 12px;
+      font-size: 14px;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: #aaa;
@@ -60,19 +60,15 @@
 
     .zoom-btn {
       position: absolute;
-      bottom: 5px;
-      right: 5px;
+      bottom: 5px; right: 5px;
       background: rgba(0,0,0,0.55);
       color: white;
       border: none;
       border-radius: 6px;
-      width: 24px;
-      height: 24px;
-      font-size: 13px;
+      width: 26px; height: 26px;
+      font-size: 14px;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       z-index: 10;
       transition: background 0.15s;
     }
@@ -89,11 +85,11 @@
     .slot-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 
     .slot-number {
-      width: 26px; height: 26px;
+      width: 28px; height: 28px;
       background: #1a1a2e;
       color: white;
       border-radius: 50%;
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 700;
       display: flex; align-items: center; justify-content: center;
     }
@@ -117,10 +113,10 @@
     .drop-slot.wrong   { border-color: #e74c3c !important; background: #fff5f5; }
     .drop-slot img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-    .slot-placeholder { font-size: 11px; color: #ccc; text-align: center; padding: 6px; }
+    .slot-placeholder { font-size: 15px; color: #ccc; text-align: center; padding: 6px; }
 
     .slot-label {
-      font-size: 12.5px;
+      font-size: 17.5px;
       font-weight: 600;
       color: #1a1a2e;
       text-align: center;
@@ -131,12 +127,12 @@
     .slot-badge {
       position: absolute;
       top: 6px; right: 6px;
-      width: 22px; height: 22px;
+      width: 24px; height: 24px;
       border-radius: 50%;
       display: none;
       align-items: center;
       justify-content: center;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
       color: white;
     }
@@ -152,7 +148,7 @@
     .btn {
       padding: 12px 32px;
       border-radius: 10px;
-      font-size: 14px;
+      font-size: 17px;
       font-family: 'Source Sans 3', sans-serif;
       font-weight: 600;
       cursor: pointer;
@@ -166,13 +162,12 @@
     .score-msg {
       text-align: center;
       margin-top: 16px;
-      font-size: 15px;
+      font-size: 18px;
       font-weight: 600;
       color: #1a1a2e;
       min-height: 24px;
     }
 
-    /* LIGHTBOX */
     .lightbox-overlay {
       display: none;
       position: fixed;
@@ -197,12 +192,7 @@
       from { transform: scale(0.88); opacity: 0; }
       to   { transform: scale(1);    opacity: 1; }
     }
-    .lightbox-box img {
-      width: 100%;
-      display: block;
-      max-height: 380px;
-      object-fit: cover;
-    }
+    .lightbox-box img { width: 100%; display: block; max-height: 380px; object-fit: cover; }
     .lightbox-close {
       position: absolute;
       top: 10px; right: 10px;
@@ -243,7 +233,6 @@
 </div>
 <div class="score-msg" id="score-msg"></div>
 
-<!-- LIGHTBOX -->
 <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox(event)">
   <div class="lightbox-box">
     <button class="lightbox-close" onclick="closeLightbox()">✕</button>
@@ -307,12 +296,7 @@ function makeCard(id) {
   card.dataset.id = id;
   card.draggable = true;
   card.innerHTML = `<img src="${IMG_DATA[id]}" alt="${id}"/><button class="zoom-btn" title="View larger">&#128269;</button>`;
-
-  card.querySelector('.zoom-btn').addEventListener('click', e => {
-    e.stopPropagation();
-    openLightbox(id);
-  });
-
+  card.querySelector('.zoom-btn').addEventListener('click', e => { e.stopPropagation(); openLightbox(id); });
   card.addEventListener('dragstart', e => {
     dragging = id;
     dragSource = card.closest('#bank') ? 'bank' : parseInt(card.closest('.drop-slot').dataset.index);
