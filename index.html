@@ -10,7 +10,7 @@
     body {
       font-family: 'Source Sans 3', sans-serif;
       background: #f5f3ef;
-      padding: 28px 16px 48px;
+      padding: 28px 20px 48px;
     }
     .page-header {
       text-align: center;
@@ -22,12 +22,8 @@
       color: #1a1a2e;
       margin-bottom: 6px;
     }
-    .page-header p {
-      font-size: 13px;
-      color: #999;
-    }
+    .page-header p { font-size: 13px; color: #999; }
 
-    /* SOURCE BANK */
     .bank-title {
       font-size: 12px;
       text-transform: uppercase;
@@ -40,20 +36,20 @@
     .bank {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
       justify-content: center;
       background: white;
       border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 28px;
+      padding: 20px;
+      margin-bottom: 32px;
       border: 1.5px solid #e0dbd0;
-      min-height: 110px;
+      min-height: 140px;
     }
 
     .drag-card {
-      width: 100px;
-      height: 80px;
-      border-radius: 8px;
+      width: 150px;
+      height: 110px;
+      border-radius: 10px;
       overflow: hidden;
       cursor: grab;
       border: 2px solid #ddd;
@@ -61,35 +57,33 @@
       transition: transform 0.15s, box-shadow 0.15s, opacity 0.2s;
       user-select: none;
     }
-    .drag-card:hover { transform: scale(1.05); box-shadow: 0 4px 14px rgba(0,0,0,0.15); }
+    .drag-card:hover { transform: scale(1.04); box-shadow: 0 6px 18px rgba(0,0,0,0.18); }
     .drag-card img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-    .drag-card.dragging { opacity: 0.4; cursor: grabbing; }
+    .drag-card.dragging { opacity: 0.35; cursor: grabbing; }
 
-    /* DROP ZONES */
     .slots-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 12px;
-      max-width: 900px;
+      gap: 14px;
+      max-width: 1000px;
       margin: 0 auto;
     }
 
     .slot-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 
     .slot-number {
-      width: 24px; height: 24px;
+      width: 26px; height: 26px;
       background: #1a1a2e;
       color: white;
       border-radius: 50%;
       font-size: 12px;
       font-weight: 700;
       display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
     }
 
     .drop-slot {
       width: 100%;
-      aspect-ratio: 5/4;
+      aspect-ratio: 4/3;
       border-radius: 10px;
       border: 2.5px dashed #c8c0b0;
       background: #faf8f4;
@@ -101,21 +95,20 @@
       position: relative;
     }
     .drop-slot.drag-over { border-color: #7c5cbf; background: #f0eaff; }
-    .drop-slot.filled { border-style: solid; border-color: #7c5cbf; }
-    .drop-slot.correct { border-color: #2ecc71; background: #f0fff6; }
-    .drop-slot.wrong { border-color: #e74c3c; background: #fff5f5; }
-
+    .drop-slot.filled { border-style: solid; border-color: #bbb; }
+    .drop-slot.correct { border-color: #2ecc71 !important; background: #f0fff6; }
+    .drop-slot.wrong   { border-color: #e74c3c !important; background: #fff5f5; }
     .drop-slot img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     .slot-placeholder {
       font-size: 11px;
       color: #ccc;
       text-align: center;
-      padding: 4px;
+      padding: 6px;
     }
 
     .slot-label {
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 600;
       color: #1a1a2e;
       text-align: center;
@@ -123,23 +116,21 @@
       font-style: italic;
     }
 
-    /* FEEDBACK badge inside slot */
     .slot-badge {
       position: absolute;
       top: 6px; right: 6px;
-      width: 20px; height: 20px;
+      width: 22px; height: 22px;
       border-radius: 50%;
       display: none;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
       color: white;
     }
     .drop-slot.correct .slot-badge { display: flex; background: #2ecc71; }
     .drop-slot.wrong .slot-badge   { display: flex; background: #e74c3c; }
 
-    /* BUTTONS */
     .btn-row {
       display: flex;
       justify-content: center;
@@ -147,7 +138,7 @@
       margin-top: 28px;
     }
     .btn {
-      padding: 11px 28px;
+      padding: 12px 32px;
       border-radius: 10px;
       font-size: 14px;
       font-family: 'Source Sans 3', sans-serif;
@@ -160,7 +151,6 @@
     .btn-check { background: #7c5cbf; color: white; }
     .btn-reset { background: #e8e0f5; color: #7c5cbf; }
 
-    /* SCORE */
     .score-msg {
       text-align: center;
       margin-top: 16px;
@@ -170,8 +160,9 @@
       min-height: 24px;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 700px) {
       .slots-grid { grid-template-columns: repeat(2, 1fr); }
+      .drag-card { width: 130px; height: 95px; }
     }
   </style>
 </head>
@@ -184,7 +175,6 @@
 
 <div class="bank-title">Images to place</div>
 <div class="bank" id="bank"></div>
-
 <div class="slots-grid" id="slots-grid"></div>
 
 <div class="btn-row">
@@ -221,7 +211,7 @@ const SEQUENCE = [
 ];
 
 let dragging = null;
-let dragSource = null; // 'bank' or slot index
+let dragSource = null;
 
 function shuffle(arr) {
   const a = [...arr];
@@ -232,41 +222,29 @@ function shuffle(arr) {
   return a;
 }
 
-function buildBank() {
-  const bank = document.getElementById('bank');
-  bank.innerHTML = '';
-  const shuffled = shuffle(SEQUENCE);
-  shuffled.forEach(item => {
-    const card = makeCard(item.id);
-    bank.appendChild(card);
-  });
-}
-
 function makeCard(id) {
   const card = document.createElement('div');
   card.className = 'drag-card';
   card.dataset.id = id;
   card.draggable = true;
   card.innerHTML = `<img src="${IMG_DATA[id]}" alt="${id}"/>`;
-
   card.addEventListener('dragstart', e => {
     dragging = id;
     dragSource = card.closest('#bank') ? 'bank' : parseInt(card.closest('.drop-slot').dataset.index);
     card.classList.add('dragging');
     e.dataTransfer.effectAllowed = 'move';
   });
-  card.addEventListener('dragend', () => {
-    card.classList.remove('dragging');
-    dragging = null;
-    dragSource = null;
-  });
-
-  // Touch support
+  card.addEventListener('dragend', () => { card.classList.remove('dragging'); dragging = null; dragSource = null; });
   card.addEventListener('touchstart', onTouchStart, {passive: true});
   card.addEventListener('touchmove', onTouchMove, {passive: false});
   card.addEventListener('touchend', onTouchEnd);
-
   return card;
+}
+
+function buildBank() {
+  const bank = document.getElementById('bank');
+  bank.innerHTML = '';
+  shuffle(SEQUENCE).forEach(item => bank.appendChild(makeCard(item.id)));
 }
 
 function buildSlots() {
@@ -275,29 +253,20 @@ function buildSlots() {
   SEQUENCE.forEach((item, i) => {
     const wrap = document.createElement('div');
     wrap.className = 'slot-wrap';
-
     const num = document.createElement('div');
     num.className = 'slot-number';
     num.textContent = i + 1;
-
     const slot = document.createElement('div');
     slot.className = 'drop-slot';
     slot.dataset.index = i;
     slot.dataset.correct = item.id;
     slot.innerHTML = `<div class="slot-placeholder">drop here</div><div class="slot-badge"></div>`;
-
     slot.addEventListener('dragover', e => { e.preventDefault(); slot.classList.add('drag-over'); });
     slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
-    slot.addEventListener('drop', e => {
-      e.preventDefault();
-      slot.classList.remove('drag-over');
-      dropIntoSlot(slot, i);
-    });
-
+    slot.addEventListener('drop', e => { e.preventDefault(); slot.classList.remove('drag-over'); dropIntoSlot(slot, i); });
     const label = document.createElement('div');
     label.className = 'slot-label';
     label.textContent = item.label;
-
     wrap.appendChild(num);
     wrap.appendChild(slot);
     wrap.appendChild(label);
@@ -307,21 +276,14 @@ function buildSlots() {
 
 function dropIntoSlot(slot, slotIndex) {
   if (!dragging) return;
-
   const existing = slot.querySelector('.drag-card');
-
-  // If slot already has a card, send it back to bank
-  if (existing) {
-    document.getElementById('bank').appendChild(existing);
-  }
-
-  // If dragging from another slot, clear that slot
+  if (existing) document.getElementById('bank').appendChild(existing);
   if (typeof dragSource === 'number' && dragSource !== slotIndex) {
     const prevSlot = document.querySelector(`.drop-slot[data-index="${dragSource}"]`);
     if (prevSlot) {
       const prevCard = prevSlot.querySelector('.drag-card');
       if (prevCard) prevSlot.removeChild(prevCard);
-      prevSlot.classList.remove('filled', 'correct', 'wrong');
+      prevSlot.classList.remove('filled','correct','wrong');
       if (!prevSlot.querySelector('.slot-placeholder')) {
         const ph = document.createElement('div');
         ph.className = 'slot-placeholder';
@@ -330,48 +292,31 @@ function dropIntoSlot(slot, slotIndex) {
       }
     }
   }
-
-  // Place card in slot
   const card = document.querySelector(`.drag-card[data-id="${dragging}"]`);
   if (!card) return;
-
   const ph = slot.querySelector('.slot-placeholder');
   if (ph) ph.remove();
-
   slot.classList.add('filled');
-  slot.classList.remove('correct', 'wrong');
+  slot.classList.remove('correct','wrong');
   slot.insertBefore(card, slot.querySelector('.slot-badge'));
-
   document.getElementById('score-msg').textContent = '';
 }
 
 function checkAnswers() {
   const slots = document.querySelectorAll('.drop-slot');
-  let correct = 0;
-  let filled = 0;
+  let correct = 0, filled = 0;
   slots.forEach(slot => {
     const card = slot.querySelector('.drag-card');
-    slot.classList.remove('correct', 'wrong');
-    const badge = slot.querySelector('.slot-badge');
+    slot.classList.remove('correct','wrong');
     if (card) {
       filled++;
-      if (card.dataset.id === slot.dataset.correct) {
-        slot.classList.add('correct');
-        badge.textContent = '✓';
-        correct++;
-      } else {
-        slot.classList.add('wrong');
-        badge.textContent = '✗';
-      }
+      if (card.dataset.id === slot.dataset.correct) { slot.classList.add('correct'); correct++; }
+      else slot.classList.add('wrong');
     }
   });
-  if (filled < 10) {
-    document.getElementById('score-msg').textContent = `Place all images before checking! (${filled}/10 placed)`;
-  } else if (correct === 10) {
-    document.getElementById('score-msg').textContent = '🎉 Perfect! All 10 in the right order.';
-  } else {
-    document.getElementById('score-msg').textContent = `${correct} out of 10 correct. Try moving the wrong ones!`;
-  }
+  if (filled < 10) document.getElementById('score-msg').textContent = `Place all images before checking! (${filled}/10 placed)`;
+  else if (correct === 10) document.getElementById('score-msg').textContent = 'Perfect! All 10 in the right order.';
+  else document.getElementById('score-msg').textContent = `${correct} out of 10 correct. Try moving the wrong ones!`;
 }
 
 function resetAll() {
@@ -380,41 +325,33 @@ function resetAll() {
   document.getElementById('score-msg').textContent = '';
 }
 
-// --- Touch support ---
-let touchCard = null;
-let touchClone = null;
-let touchOrigin = null;
+let touchCard = null, touchClone = null, touchDragging = null, touchSource = null;
 
 function onTouchStart(e) {
   touchCard = e.currentTarget;
-  dragging = touchCard.dataset.id;
-  dragSource = touchCard.closest('#bank') ? 'bank' : parseInt(touchCard.closest('.drop-slot')?.dataset.index ?? -1);
+  touchDragging = touchCard.dataset.id;
+  touchSource = touchCard.closest('#bank') ? 'bank' : parseInt(touchCard.closest('.drop-slot')?.dataset.index ?? -1);
   const rect = touchCard.getBoundingClientRect();
   touchClone = touchCard.cloneNode(true);
-  touchClone.style.cssText = `position:fixed;width:${rect.width}px;height:${rect.height}px;opacity:0.8;pointer-events:none;z-index:9999;border-radius:8px;overflow:hidden;`;
+  touchClone.style.cssText = `position:fixed;width:${rect.width}px;height:${rect.height}px;opacity:0.8;pointer-events:none;z-index:9999;border-radius:10px;overflow:hidden;`;
   document.body.appendChild(touchClone);
 }
-
 function onTouchMove(e) {
   e.preventDefault();
   const t = e.touches[0];
-  if (touchClone) {
-    touchClone.style.left = (t.clientX - 50) + 'px';
-    touchClone.style.top  = (t.clientY - 40) + 'px';
-  }
+  if (touchClone) { touchClone.style.left=(t.clientX-75)+'px'; touchClone.style.top=(t.clientY-55)+'px'; }
 }
-
 function onTouchEnd(e) {
   if (touchClone) { document.body.removeChild(touchClone); touchClone = null; }
   const t = e.changedTouches[0];
   const el = document.elementFromPoint(t.clientX, t.clientY);
   const slot = el?.closest('.drop-slot');
-  if (slot) {
+  if (slot && touchDragging) {
+    dragging = touchDragging;
+    dragSource = touchSource;
     dropIntoSlot(slot, parseInt(slot.dataset.index));
   }
-  dragging = null;
-  dragSource = null;
-  touchCard = null;
+  touchCard = null; touchDragging = null; touchSource = null;
 }
 
 buildBank();
