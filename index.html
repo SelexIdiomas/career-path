@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Career Path Activity</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #e0f2fe, #fce7f3);
+}
+
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+.section {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(10px);}
+  to {opacity:1; transform:translateY(0);}
+}
+
+/* images */
+.images {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.images img {
+  width: 140px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: grab;
+}
+
+/* slots */
+.timeline {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.slot {
+  flex: 1;
+  height: 110px;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+}
+
+/* matching */
+.match-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.words, .targets {
+  width: 45%;
+}
+
+.word, .target {
+  background: #eef2ff;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 8px;
+  cursor: grab;
+}
+
+.target {
+  border: 2px dashed #ccc;
+  background: #f8fafc;
+}
+
+/* button */
+button {
+  margin-top: 20px;
+  padding: 12px 25px;
+  border: none;
+  background: #6366f1;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#feedback {
+  text-align: center;
+  margin-top: 15px;
+  font-weight: 500;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Career Path Activity</h1>
+
+<div class="section">
+<h2>Step 1: Order the career stages</h2>
+
+<div class="images" id="images">
+  <img src="https://images.unsplash.com/photo-1581091012184-5c1d8c2c4c8c" data-order="1" draggable="true">
+  <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df" data-order="2" draggable="true">
+  <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d" data-order="3" draggable="true">
+  <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72" data-order="4" draggable="true">
+  <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d" data-order="5" draggable="true">
+</div>
+
+<div class="timeline">
+  <div class="slot"></div>
+  <div class="slot"></div>
+  <div class="slot"></div>
+  <div class="slot"></div>
+  <div class="slot"></div>
+</div>
+
+<button onclick="checkOrder()">Check Order</button>
+
+</div>
+
+<div class="section">
+<h2>Step 2: Match the expressions</h2>
+
+<div class="match-container">
+
+<div class="words">
+  <div class="word" draggable="true" data-match="1">applied for a job</div>
+  <div class="word" draggable="true" data-match="2">was short-listed for</div>
+  <div class="word" draggable="true" data-match="3">interview</div>
+  <div class="word" draggable="true" data-match="4">was hired by</div>
+  <div class="word" draggable="true" data-match="5">resigned from</div>
+</div>
+
+<div class="targets">
+  <div class="target" data-match="1"></div>
+  <div class="target" data-match="2"></div>
+  <div class="target" data-match="3"></div>
+  <div class="target" data-match="4"></div>
+  <div class="target" data-match="5"></div>
+</div>
+
+</div>
+
+<button onclick="checkMatch()">Check Matching</button>
+
+<p id="feedback"></p>
+
+</div>
+
+</div>
+
+<script>
+let dragged;
+
+// drag images
+document.querySelectorAll("img, .word").forEach(el => {
+  el.addEventListener("dragstart", e => dragged = el);
+});
+
+document.querySelectorAll(".slot, .target").forEach(zone => {
+  zone.addEventListener("dragover", e => e.preventDefault());
+  zone.addEventListener("drop", () => {
+    zone.innerHTML = "";
+    zone.appendChild(dragged);
+  });
+});
+
+// check order
+function checkOrder(){
+  let correct = true;
+  document.querySelectorAll(".slot").forEach((slot, index) => {
+    if(!slot.firstChild || slot.firstChild.dataset.order != index+1){
+      correct = false;
+    }
+  });
+
+  alert(correct ? "✅ Correct order!" : "❌ Try again!");
+}
+
+// check matching
+function checkMatch(){
+  let correct = true;
+
+  document.querySelectorAll(".target").forEach(target => {
+    if(!target.firstChild || target.firstChild.dataset.match !== target.dataset.match){
+      correct = false;
+    }
+  });
+
+  document.getElementById("feedback").innerText = 
+    correct ? "✅ Well done! Everything is correct!" : "❌ Some answers are incorrect. Try again!";
+}
+</script>
+
+</body>
+</html>
