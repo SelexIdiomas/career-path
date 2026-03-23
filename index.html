@@ -12,19 +12,11 @@
       background: #f5f3ef;
       padding: 28px 20px 48px;
     }
-    .page-header {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-    .page-header h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 22px;
-      color: #1a1a2e;
-      margin-bottom: 6px;
-    }
+    .page-header { text-align: center; margin-bottom: 24px; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: 22px; color: #1a1a2e; margin-bottom: 6px; }
     .page-header p { font-size: 13px; color: #999; }
 
-    .bank-title {
+    .section-title {
       font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -33,6 +25,7 @@
       margin-bottom: 10px;
       text-align: center;
     }
+
     .bank {
       display: flex;
       flex-wrap: wrap;
@@ -44,6 +37,9 @@
       margin-bottom: 32px;
       border: 1.5px solid #e0dbd0;
       min-height: 140px;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .drag-card {
@@ -56,10 +52,31 @@
       flex-shrink: 0;
       transition: transform 0.15s, box-shadow 0.15s, opacity 0.2s;
       user-select: none;
+      position: relative;
     }
     .drag-card:hover { transform: scale(1.04); box-shadow: 0 6px 18px rgba(0,0,0,0.18); }
     .drag-card img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
     .drag-card.dragging { opacity: 0.35; cursor: grabbing; }
+
+    .zoom-btn {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      background: rgba(0,0,0,0.55);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      width: 24px;
+      height: 24px;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: background 0.15s;
+    }
+    .zoom-btn:hover { background: rgba(124,92,191,0.9); }
 
     .slots-grid {
       display: grid;
@@ -100,12 +117,7 @@
     .drop-slot.wrong   { border-color: #e74c3c !important; background: #fff5f5; }
     .drop-slot img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-    .slot-placeholder {
-      font-size: 11px;
-      color: #ccc;
-      text-align: center;
-      padding: 6px;
-    }
+    .slot-placeholder { font-size: 11px; color: #ccc; text-align: center; padding: 6px; }
 
     .slot-label {
       font-size: 12.5px;
@@ -160,7 +172,53 @@
       min-height: 24px;
     }
 
-    @media (max-width: 700px) {
+    /* LIGHTBOX */
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox-overlay.show { display: flex; }
+    .lightbox-box {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      max-width: 520px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      animation: popIn 0.2s ease;
+      position: relative;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.88); opacity: 0; }
+      to   { transform: scale(1);    opacity: 1; }
+    }
+    .lightbox-box img {
+      width: 100%;
+      display: block;
+      max-height: 380px;
+      object-fit: cover;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 32px; height: 32px;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+    }
+    .lightbox-close:hover { background: rgba(124,92,191,0.9); }
+
+    @media (max-width: 600px) {
       .slots-grid { grid-template-columns: repeat(2, 1fr); }
       .drag-card { width: 130px; height: 95px; }
     }
@@ -170,11 +228,13 @@
 
 <div class="page-header">
   <h1>Josef's career – put the images in the right order</h1>
-  <p>Drag each image to the correct position in the career sequence</p>
+  <p>Drag each image to the correct position · click the magnifier to see it larger</p>
 </div>
 
-<div class="bank-title">Images to place</div>
+<div class="section-title">Images to place</div>
 <div class="bank" id="bank"></div>
+
+<div class="section-title">Career sequence</div>
 <div class="slots-grid" id="slots-grid"></div>
 
 <div class="btn-row">
@@ -182,6 +242,14 @@
   <button class="btn btn-reset" onclick="resetAll()">Reset</button>
 </div>
 <div class="score-msg" id="score-msg"></div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lightbox-box">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img id="lightbox-img" src="" alt=""/>
+  </div>
+</div>
 
 <script>
 const IMG_DATA = {
@@ -222,12 +290,29 @@ function shuffle(arr) {
   return a;
 }
 
+function openLightbox(id) {
+  document.getElementById('lightbox-img').src = IMG_DATA[id];
+  document.getElementById('lightbox').classList.add('show');
+}
+
+function closeLightbox(e) {
+  if (!e || e.target === document.getElementById('lightbox') || e.target.classList.contains('lightbox-close')) {
+    document.getElementById('lightbox').classList.remove('show');
+  }
+}
+
 function makeCard(id) {
   const card = document.createElement('div');
   card.className = 'drag-card';
   card.dataset.id = id;
   card.draggable = true;
-  card.innerHTML = `<img src="${IMG_DATA[id]}" alt="${id}"/>`;
+  card.innerHTML = `<img src="${IMG_DATA[id]}" alt="${id}"/><button class="zoom-btn" title="View larger">&#128269;</button>`;
+
+  card.querySelector('.zoom-btn').addEventListener('click', e => {
+    e.stopPropagation();
+    openLightbox(id);
+  });
+
   card.addEventListener('dragstart', e => {
     dragging = id;
     dragSource = card.closest('#bank') ? 'bank' : parseInt(card.closest('.drop-slot').dataset.index);
